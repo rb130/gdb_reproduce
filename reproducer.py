@@ -2,7 +2,6 @@ from typing import List
 import gdb
 import os
 import json
-import signal
 
 from gdb_utils import *
 

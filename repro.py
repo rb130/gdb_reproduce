@@ -1,3 +1,4 @@
+from typing import List
 import os
 import sys
 import subprocess
@@ -6,22 +7,26 @@ import tempfile
 import struct
 
 
-def parse_rb_stat(file_name) -> bool:
+def parse_rb_stat(file_name) -> List[int]:
     if not os.path.exists(file_name):
         return False
     with open(file_name, "rb") as f:
         data = f.read()
     data = list(map(lambda x: x[0], struct.iter_unpack("<I", data)))
-    return any(x > 0 for x in data[1:])
+    data = data[1:]
+    bugs = [i for i, x in enumerate(data) if x > 0]
+    return bugs
 
 
 if __name__ == "__main__":
 
-    if len(sys.argv) != 2:
-        print("Usage: repro [config.json]")
+    if len(sys.argv) != 3:
+        print("Usage: repro [config.json] [output]")
         exit(1)
 
     config_path = sys.argv[1]
+    output_path = sys.argv[2]
+
     with open(config_path) as f:
         config = json.load(f)
 
@@ -52,10 +57,8 @@ if __name__ == "__main__":
         except subprocess.TimeoutExpired:
             proc.kill()
 
-    success = parse_rb_stat(log_path)
+    bugs = parse_rb_stat(log_path)
     temp_folder.cleanup()
 
-    if success:
-        exit()
-    else:
-        exit(-1)
+    with open(output_path, "w") as f:
+        f.write(str(bugs) + "\n")
