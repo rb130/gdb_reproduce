@@ -25,10 +25,12 @@ if __name__ == "__main__":
         exit(1)
 
     config_path = sys.argv[1]
-    output_path = sys.argv[2]
-
     with open(config_path) as f:
         config = json.load(f)
+
+    output_path = sys.argv[2]
+    if os.path.exists(output_path):
+        os.remove(output_path)
 
     curdir = os.path.abspath(os.path.dirname(__file__))
     reproducer_path = os.path.join(curdir, "reproducer.py")
