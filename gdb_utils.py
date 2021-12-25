@@ -32,8 +32,8 @@ def gdb_execute_timeout(cmd: str, timeout: Optional[int] = None, show: Optional[
     if timeout is None:
         gdb_execute(cmd, show)
         return
-    pid = os.getpid()
-    #pid = gdb.selected_inferior().pid
+    #pid = os.getpid()
+    pid = gdb.selected_inferior().pid
     proc = delay_signal(pid, int(signal.SIGINT), timeout)
     gdb_bad = None
     ans = None

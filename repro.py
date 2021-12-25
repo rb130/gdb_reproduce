@@ -63,4 +63,4 @@ if __name__ == "__main__":
     temp_folder.cleanup()
 
     with open(output_path, "w") as f:
-        f.write(str(bugs) + "\n")
+        f.write(json.dumps(bugs) + "\n")
