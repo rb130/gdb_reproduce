@@ -44,7 +44,8 @@ if __name__ == "__main__":
 
     environ = os.environ.copy()
     environ["REPRO_CONFIG"] = os.path.abspath(config_path)
-    environ["PYTHONPATH"] = curdir + ":" + os.getenv("PYTHON_PATH", "")
+    environ["PYTHONPATH"] = ':'.join([curdir, os.path.join(curdir, "gdb_utils")]) \
+        + os.getenv("PYTHONPATH", "")
     environ["RACEBENCH_STAT"] = log_path
 
     try:
