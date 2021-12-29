@@ -9,7 +9,7 @@ import struct
 
 def parse_rb_stat(file_name) -> List[int]:
     if not os.path.exists(file_name):
-        return False
+        return []
     with open(file_name, "rb") as f:
         data = f.read()
     data = list(map(lambda x: x[0], struct.iter_unpack("<I", data)))
